@@ -1,0 +1,4 @@
+# Archivos de Visual Studio que deben ignorarse
+.vs/
+bin/
+obj/
