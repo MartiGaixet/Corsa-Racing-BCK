@@ -32,7 +32,9 @@ namespace CorsaRacing.Repositories
 
         public IEnumerable<Race> GetAllRaces()
         {
-            return _context.Races.ToList();
+            return _context.Races
+                .Include(r => r.ParticipationRace)
+                .ToList();
         }
 
         public Race GetRaceById(int id)
