@@ -28,6 +28,10 @@ namespace CorsaRacing
             builder.Services.AddScoped<IRacesRepository, RaceRepository>();
             builder.Services.AddScoped<IRaceService, RaceService>();
 
+            builder.Services.AddScoped<IParticipationRaceRepository, ParticipationRaceRepository>();
+            builder.Services.AddScoped<IParticipationRaceService, ParticipationRaceService>();
+
+
             builder.Services.AddControllers()
                 .AddJsonOptions(options =>
                 {
