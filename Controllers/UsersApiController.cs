@@ -64,17 +64,21 @@ namespace CorsaRacing.Controllers
 
         // PUT: api/UsersApi/5
         [HttpPut("{id}")]
-        public IActionResult UpdateUser(int id, User user)
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] User updatedUser)
         {
-            if (id != user.Id)
+            if (id != updatedUser.Id)
             {
-                return BadRequest();
+                return BadRequest("ID mismatch");
             }
 
-            _userService.UpdateUser(user);
-            return NoContent();
-        }
+            bool updated = await _userService.UpdateUser(id, updatedUser);
+            if (!updated)
+            {
+                return NotFound();
+            }
 
+            return Ok(new { message = "User updated successfully" });
+        }
         // DELETE: api/UsersApi/5
         [HttpDelete("{id}")]
         public IActionResult DeleteUser(int id)
