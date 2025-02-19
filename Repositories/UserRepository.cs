@@ -1,4 +1,5 @@
 ﻿using CorsaRacing.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CorsaRacing.Repositories
 {
@@ -37,10 +38,10 @@ namespace CorsaRacing.Repositories
             return _context.Drivers.Find(id);
         }
 
-        public void UpdateUser(User user)
+        public async Task UpdateUser(User user)
         {
-            _context.Drivers.Update(user);
-            _context.SaveChanges();
+            _context.Entry(user).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
         }
     }
 }

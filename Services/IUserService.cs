@@ -9,7 +9,7 @@ namespace CorsaRacing.Services
         void DeleteUser(int id);
         IEnumerable<User> GetAllUsers();
         User GetUserById(int id);
-        void UpdateUser(User user);
+        Task<bool> UpdateUser(int id, User updatedUser);
         User GetUserByEmail(string email);
         User AuthenticateUser(string email, string password);
     }

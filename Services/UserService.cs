@@ -40,16 +40,20 @@ namespace CorsaRacing.Services
             return _userRepository.GetUserById(id);
         }
 
-        public void UpdateUser(User user)
+        public async Task<bool> UpdateUser(int id, User updatedUser)
         {
-            
-            var existingUser = _userRepository.GetUserById(user.Id);
-            if (existingUser != null && user.Password != existingUser.Password)
+            var existingUser =  _userRepository.GetUserById(id);
+            if (existingUser == null)
             {
-                user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+                return false; // Usuario no encontrado
             }
 
-            _userRepository.UpdateUser(user);
+            // Actualizar solo los campos editables
+            existingUser.Name = updatedUser.Name;
+            existingUser.Country = updatedUser.Country;
+
+            await _userRepository.UpdateUser(existingUser);
+            return true;
         }
 
         public User GetUserByEmail(string email)
