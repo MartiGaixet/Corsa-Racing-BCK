@@ -41,12 +41,16 @@ namespace CorsaRacing.Controllers
             if (participation == null)
                 return BadRequest("Datos inválidos.");
 
+            if (participation.UserId == 0 || participation.RaceId == 0)
+                return BadRequest("Faltan los IDs de usuario o carrera.");
+
             bool created = await _participationRaceService.AddParticipationAsync(participation.UserId, participation.RaceId);
             if (!created)
                 return Conflict("El usuario ya está registrado en esta carrera.");
 
-            return CreatedAtAction(nameof(GetById), new { id = participation.Id }, participation);
+            return Ok("Participación creada exitosamente.");
         }
+
 
         // DELETE: api/ParticipationRacesApi/5
         [HttpDelete("{id}")]

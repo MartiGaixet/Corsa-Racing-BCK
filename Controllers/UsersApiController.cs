@@ -91,5 +91,16 @@ namespace CorsaRacing.Controllers
             _userService.DeleteUser(id);
             return NoContent();
         }
+
+        [HttpGet("byEmail/{email}")]
+        public async Task<IActionResult> GetUserByEmail(string email)
+        {
+            var user = _userService.GetUserByEmail(email);
+            if (user == null)
+            {
+                return NotFound(new { message = "Usuario no encontrado" });
+            }
+            return Ok(user);
+        }
     }
 }
