@@ -1,4 +1,7 @@
-﻿namespace CorsaRacing.Models
+﻿using System.Reflection.Metadata;
+using System.Text.Json.Serialization;
+
+namespace CorsaRacing.Models
 {
     public class User
     {
@@ -9,6 +12,8 @@
         public String Country { get; set; }
         public float Rating { get; set; }
 
+
+        [JsonIgnore]
         public List<ParticipationRace>? ParticipationRaces { get; set; }
 
 

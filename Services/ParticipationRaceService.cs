@@ -26,8 +26,6 @@ namespace CorsaRacing.Services
 
         public async Task<bool> AddParticipationAsync(int userId, int raceId)
         {
-            if (await _participationRaceRepository.ExistsAsync(userId, raceId))
-                return false; // Ya existe la participación
 
             var participation = new ParticipationRace { UserId = userId, RaceId = raceId };
             await _participationRaceRepository.AddAsync(participation);
