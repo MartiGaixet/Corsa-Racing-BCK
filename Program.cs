@@ -3,6 +3,7 @@ using CorsaRacing.Models;
 using CorsaRacing.Repositories;
 using CorsaRacing.Services;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 namespace CorsaRacing
 {
@@ -12,9 +13,7 @@ namespace CorsaRacing
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-            builder.Services.AddControllersWithViews();
-
+            // Configurar base de datos
             builder.Services.AddDbContext<Context>(options =>
                 options.UseSqlServer("Data Source=.\\SQLEXPRESS;Initial Catalog=CorsaRacing;Integrated Security=True;TrustServerCertificate=True"));
 
@@ -23,19 +22,17 @@ namespace CorsaRacing
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IChampionshipRepository, ChampionshipRepository>();
             builder.Services.AddScoped<IChampionshipService, ChampionshipService>();
-
-            // Registrar RaceRepository y RaceService
             builder.Services.AddScoped<IRacesRepository, RaceRepository>();
             builder.Services.AddScoped<IRaceService, RaceService>();
-
             builder.Services.AddScoped<IParticipationRaceRepository, ParticipationRaceRepository>();
             builder.Services.AddScoped<IParticipationRaceService, ParticipationRaceService>();
 
-
+            // Configurar controladores y JSON para evitar referencias circulares
             builder.Services.AddControllers()
                 .AddJsonOptions(options =>
                 {
-                    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+                    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+                    options.JsonSerializerOptions.WriteIndented = true; // Mejora legibilidad del JSON
                 });
 
             // Agregar servicio CORS
@@ -51,7 +48,7 @@ namespace CorsaRacing
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+            // Configurar el pipeline de la aplicación
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
